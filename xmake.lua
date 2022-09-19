@@ -1,11 +1,12 @@
 add_rules('mode.debug', 'mode.release')
 
-set_languages('cxx20')
 set_defaultplat('mingw')
 set_defaultarchs('x86_64')
 
+set_languages('cxx20')
 -- set_toolchains('clang')
 
+-- build ftxui via cmake
 package('ftxui')
   add_deps('cmake')
   set_sourcedir(path.join(os.scriptdir(), 'vendor/FTXUI'))
@@ -20,22 +21,24 @@ add_requires(
   'fmt'
 )
 
-target('cpp')
+target('learn_ftxui')
   set_kind('binary')
   add_packages(
     'ftxui',
     'fmt'
   )
   add_files('src/*.cpp')
-  add_ldflags(
-    '-static',
-    '-static-libgcc',
-    '-static-libstdc++',
-    '-lpthread'
-  )
   add_includedirs(
     'vendor/FTXUI/include'
   )
+  add_ldflags('-lpthread')
+  if is_plat('mingw') then
+    add_ldflags(
+      '-static',
+      '-static-libgcc',
+      '-static-libstdc++',
+    )
+  end
   -- set_optimize('fastest')
 target_end()
 
