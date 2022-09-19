@@ -37,3 +37,21 @@ target('cpp')
     'vendor/FTXUI/include'
   )
   -- set_optimize('fastest')
+target_end()
+
+task('install_vendor')
+  set_menu {
+    usage = 'xmake install_vendor',
+    description = 'downloads vendor library',
+    options = {}
+  }
+  on_run(function ()
+    if not os.exists('vendor') then
+      os.mkdir('vendor')
+    end
+    if os.exists('vendor') then
+      os.cd('vendor')
+      os.exec('git clone https://github.com/ArthurSonzogni/FTXUI')
+    end
+  end)
+task_end()
