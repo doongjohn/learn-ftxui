@@ -36,7 +36,7 @@ target('learn_ftxui')
     add_ldflags(
       '-static',
       '-static-libgcc',
-      '-static-libstdc++',
+      '-static-libstdc++'
     )
   end
   -- set_optimize('fastest')
