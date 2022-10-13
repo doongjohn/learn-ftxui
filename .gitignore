@@ -1,5 +1,8 @@
+.cache/
 .ccls-cache/
+
 .xmake/
 build/
 vendor/
+
 compile_commands.json

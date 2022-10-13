@@ -4,7 +4,10 @@ set_defaultplat('mingw')
 set_defaultarchs('x86_64')
 
 set_languages('cxx20')
--- set_toolchains('clang')
+
+if not is_plat('mingw') then
+  set_toolchains('clang')
+end
 
 -- build ftxui via cmake
 package('ftxui')
@@ -12,6 +15,7 @@ package('ftxui')
   set_sourcedir(path.join(os.scriptdir(), 'vendor/FTXUI'))
   on_install(function (package)
     local configs = {}
+    table.insert(configs, '-DFTXUI_MICROSOFT_TERMINAL_FALLBACK=OFF')
     import('package.tools.cmake').install(package, configs)
   end)
 package_end()
@@ -23,14 +27,6 @@ add_requires(
 
 target('learn_ftxui')
   set_kind('binary')
-  add_packages(
-    'ftxui',
-    'fmt'
-  )
-  add_files('src/*.cpp')
-  add_includedirs(
-    'vendor/FTXUI/include'
-  )
   add_ldflags('-lpthread')
   if is_plat('mingw') then
     add_ldflags(
@@ -39,6 +35,14 @@ target('learn_ftxui')
       '-static-libstdc++'
     )
   end
+  add_files('src/*.cpp')
+  add_includedirs(
+    'vendor/FTXUI/include'
+  )
+  add_packages(
+    'ftxui',
+    'fmt'
+  )
   -- set_optimize('fastest')
 target_end()
 
